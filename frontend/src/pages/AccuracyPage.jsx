@@ -142,7 +142,7 @@ export default function AccuracyPage({ onMenuClick }) {
   return (
     <div className="flex flex-col min-h-screen">
       <TopBar
-        breadcrumb="WindTrader"
+        breadcrumb="GridSight"
         title="Forecast Accuracy Analysis"
         subtitle="Evaluation period: January 2026"
         onRefresh={() => load(true)}

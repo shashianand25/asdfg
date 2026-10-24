@@ -76,7 +76,7 @@ export default function MethodologyPage({ onMenuClick }) {
   return (
     <div className="flex flex-col min-h-screen">
       <TopBar
-        breadcrumb="WindTrader"
+        breadcrumb="GridSight"
         title="Methodology & Data"
         subtitle="Source data, forecast selection, and calculation reference"
         onMenuClick={onMenuClick}
@@ -86,7 +86,7 @@ export default function MethodologyPage({ onMenuClick }) {
         <PageHeader
           eyebrow="DOCUMENTATION"
           title="Methodology & Data"
-          description="Understand the source data, forecast selection logic, and calculations behind the WindTrader analysis."
+          description="Understand the source data, forecast selection logic, and calculations behind the GridSight analysis."
         />
 
         {/* Data sources */}
@@ -265,7 +265,7 @@ export default function MethodologyPage({ onMenuClick }) {
         </section>
 
         <p className="source-note text-center pb-4">
-          WindTrader — Wind Generation Intelligence Platform. Source data: Elexon BMRS (WINDFOR, FUELHH). January 2026.
+          GridSight — Wind Generation Intelligence Platform. Source data: Elexon BMRS (WINDFOR, FUELHH). January 2026.
         </p>
       </div>
     </div>

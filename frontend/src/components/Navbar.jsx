@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom'
 import { useLocation } from 'react-router-dom'
-import { Menu, X, Zap } from 'lucide-react'
+import { Menu, X } from 'lucide-react'
 
 export default function Navbar({ mobileOpen, onClose, onMenuClick }) {
   const location = useLocation()
@@ -12,9 +12,9 @@ export default function Navbar({ mobileOpen, onClose, onMenuClick }) {
     <header className={`site-header ${isHome ? 'site-header-home' : ''}`}>
       <div className="site-header-inner">
         <NavLink to="/" end className="brand-lockup" onClick={onClose}>
-          <span className="brand-mark" aria-hidden="true"><Zap size={15} strokeWidth={2.5} /></span>
+          <img className="brand-mark brand-logo-image" src="/gridsight.svg" alt="" aria-hidden="true" />
           <span>
-            <span className="brand-name">WindTrader</span>
+            <span className="brand-name">GridSight</span>
             <span className="brand-descriptor">Energy intelligence</span>
           </span>
         </NavLink>

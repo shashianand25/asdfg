@@ -6,7 +6,7 @@ import { sendChatMessage } from '../api/client'
 const INITIAL_MESSAGE = {
   role: 'model',
   content:
-    "Hello! I'm the WindTrader assistant. Ask me about the January 2026 wind generation forecasts, historical accuracy metrics, or how to interpret the analysis.",
+    "Hello! I'm the GridSight assistant. Ask me about the January 2026 wind generation forecasts, historical accuracy metrics, or how to interpret the analysis.",
 }
 
 const SUGGESTIONS = [
@@ -113,7 +113,7 @@ export default function Chatbot({ selectedDate = '2026-01-15' }) {
           onClick={() => setOpen(true)}
           className="chat-launcher fixed bottom-6 right-6 flex items-center justify-center transition-all z-50"
           style={{ width: 52, height: 52 }}
-          aria-label="Open WindTrader Assistant"
+          aria-label="Open GridSight Assistant"
         >
           <MessageCircle size={20} strokeWidth={1.75} />
         </button>
@@ -132,7 +132,7 @@ export default function Chatbot({ selectedDate = '2026-01-15' }) {
           }}
           role="dialog"
           aria-modal={fullscreen}
-          aria-label="WindTrader Assistant"
+          aria-label="GridSight Assistant"
         >
           {/* Header */}
           <div className="chat-header flex items-center justify-between px-5 py-4 flex-shrink-0">
@@ -141,7 +141,7 @@ export default function Chatbot({ selectedDate = '2026-01-15' }) {
                 <Zap size={14} className="text-white" strokeWidth={2.5} />
               </div>
               <div>
-                <p className="text-white text-sm font-semibold leading-tight">WindTrader Assistant</p>
+                <p className="text-white text-sm font-semibold leading-tight">GridSight Assistant</p>
                 <p className="mt-1 flex items-center gap-1.5 text-[10px] leading-tight text-indigo-100/80"><span className="chat-status-dot" /> January 2026 · Elexon wind data</p>
               </div>
             </div>
@@ -223,7 +223,7 @@ export default function Chatbot({ selectedDate = '2026-01-15' }) {
               placeholder="Ask about wind forecasts…"
               disabled={loading}
               rows={1}
-              aria-label="Message WindTrader Assistant"
+              aria-label="Message GridSight Assistant"
               className="chat-composer-input flex-1"
             />
             <button

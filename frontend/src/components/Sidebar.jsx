@@ -4,7 +4,6 @@ import {
   LineChart,
   BarChart3,
   BookOpen,
-  Zap,
   Database,
 } from 'lucide-react'
 
@@ -34,12 +33,10 @@ export default function Sidebar({ mobileOpen, onClose }) {
         {/* Brand */}
         <div className="px-4 py-5 border-b border-navy-800">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 bg-electric-500 rounded-lg flex items-center justify-center flex-shrink-0">
-              <Zap size={16} className="text-white" strokeWidth={2.5} />
-            </div>
+            <img className="h-8 w-8 rounded-lg flex-shrink-0" src="/gridsight.svg" alt="" aria-hidden="true" />
             <div>
               <span className="text-white font-bold text-base tracking-tight leading-none block">
-                WindTrader
+                GridSight
               </span>
               <span className="text-blue-400 text-[9px] font-semibold uppercase tracking-widest leading-none block mt-0.5">
                 Energy Intelligence

@@ -245,6 +245,12 @@ export default function OverviewPage() {
       <section className="landing-hero">
         <div className="content-frame landing-hero-grid">
           <div className="landing-hero-copy">
+            <div className="home-brand-lockup">
+              <img src="/gridsight.svg" alt="" aria-hidden="true" />
+              <span className="home-brand-name">GridSight</span>
+              <span className="home-brand-divider" />
+              <span className="home-brand-descriptor">Wind intelligence</span>
+            </div>
             <p className="landing-eyebrow"><span className="signal-dot teal" />UK energy markets / wind intelligence</p>
             <h1>Forecast the wind.<br /><em>Move with the signal.</em></h1>
             <p className="landing-lede">
@@ -270,7 +276,7 @@ export default function OverviewPage() {
           <div className="landing-intro-body">
             <h2>From a forecast<br /><em>to a decision.</em></h2>
             <p>
-              The useful question is rarely just “what is the forecast?” WindTrader brings the outlook, its revisions, and its historical behaviour into one considered workspace—so the signal is easier to read before the market moves.
+              The useful question is rarely just “what is the forecast?” GridSight brings the outlook, its revisions, and its historical behaviour into one considered workspace—so the signal is easier to read before the market moves.
             </p>
           </div>
         </div>
@@ -320,7 +326,7 @@ export default function OverviewPage() {
 
       <footer className="landing-footer">
         <div className="content-frame landing-footer-inner">
-          <div className="footer-brand"><span className="brand-mark"><span className="footer-zap">↯</span></span><span>WindTrader</span></div>
+          <div className="footer-brand"><img className="brand-mark brand-logo-image" src="/gridsight.svg" alt="" aria-hidden="true" /><span>GridSight</span></div>
           <p>Elexon BMRS · National wind generation · January 2026</p>
           <div className="footer-links"><Link to="/forecast">Forecast Explorer</Link><Link to="/accuracy">Accuracy Analysis</Link><Link to="/methodology">Methodology</Link></div>
         </div>

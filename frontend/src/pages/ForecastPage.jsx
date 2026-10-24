@@ -54,7 +54,7 @@ function exportCSV(slots, date) {
   const url = URL.createObjectURL(blob)
   const a = document.createElement('a')
   a.href = url
-  a.download = `windtrader_forecast_${date}.csv`
+  a.download = `gridsight_forecast_${date}.csv`
   a.click()
   URL.revokeObjectURL(url)
 }
@@ -138,7 +138,7 @@ export default function ForecastPage({ onMenuClick, selectedDate, onDateChange }
   return (
     <div className="flex flex-col min-h-screen">
       <TopBar
-        breadcrumb="WindTrader"
+        breadcrumb="GridSight"
         title="Forecast Explorer"
         subtitle={`Delivery date: ${date}`}
         onRefresh={() => load(true)}
