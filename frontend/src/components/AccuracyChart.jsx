@@ -12,7 +12,7 @@ import {
 } from 'recharts'
 
 const COLORS = {
-  mae:  '#367CF5',
+  mae:  '#39845c',
   rmse: '#F59E35',
   bias: '#0F9F91',
 }

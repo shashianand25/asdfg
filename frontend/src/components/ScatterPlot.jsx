@@ -112,20 +112,20 @@ export default function ScatterPlot({ data }) {
         {/* Perfect forecast reference line y = x */}
         <ReferenceLine
           segment={[{ x: minVal, y: minVal }, { x: maxVal, y: maxVal }]}
-          stroke="#A3ADBF"
+          stroke="#9cb8a2"
           strokeDasharray="6 3"
           strokeWidth={1.5}
           label={{
             value: 'Perfect',
             position: 'insideTopLeft',
-            fill: '#A3ADBF',
+            fill: '#9cb8a2',
             fontSize: 10,
           }}
         />
 
         <Scatter
           data={data}
-          fill="#367CF5"
+          fill="#39845c"
           fillOpacity={0.45}
           r={4}
         />

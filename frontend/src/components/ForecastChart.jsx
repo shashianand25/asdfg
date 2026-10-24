@@ -8,7 +8,7 @@ import {
   YAxis,
 } from 'recharts'
 
-const COLORS = { latest: '#3478F6', dayAhead: '#F2A23A', actual: '#168F86' }
+const COLORS = { latest: '#39845c', dayAhead: '#9cb8a2', actual: '#168F86' }
 
 function formatTime(value) {
   try {

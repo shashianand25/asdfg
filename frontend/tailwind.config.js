@@ -20,10 +20,10 @@ export default {
         },
         // Electric blue (primary action color)
         electric: {
-          50:  '#eff6ff',
-          500: '#3478F6',
-          600: '#2866D8',
-          700: '#193A78',
+          50:  '#edf7f0',
+          500: '#2d8059',
+          600: '#236d4b',
+          700: '#18583c',
         },
         teal: {
           100: '#DDF5F1',

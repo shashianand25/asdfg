@@ -138,13 +138,13 @@ function WindSnapshot({ data, status }) {
           <svg viewBox="0 0 500 100" role="img" aria-label="Latest and day-ahead wind forecast across the delivery day">
             <defs>
               <linearGradient id="snapshotArea" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#7047d6" stopOpacity="0.18" />
-                <stop offset="100%" stopColor="#7047d6" stopOpacity="0" />
+                <stop offset="0%" stopColor="#438b5c" stopOpacity="0.18" />
+                <stop offset="100%" stopColor="#438b5c" stopOpacity="0" />
               </linearGradient>
             </defs>
             <path d={`M ${fillPoints} Z`} fill="url(#snapshotArea)" />
             <polyline points={dayAheadPoints} fill="none" stroke="#9cb8b0" strokeWidth="2.5" strokeDasharray="5 6" strokeLinecap="round" strokeLinejoin="round" />
-            <polyline points={latestPoints} fill="none" stroke="#6336c2" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+            <polyline points={latestPoints} fill="none" stroke="#39845c" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         ) : (
           <div className="snapshot-empty-state">
@@ -187,17 +187,17 @@ function EnergySignalArt() {
       <svg viewBox="0 0 620 500" role="presentation">
         <defs>
           <linearGradient id="signalStroke" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stopColor="#a88bf0" />
-            <stop offset="100%" stopColor="#63c5b4" />
+            <stop offset="0%" stopColor="#8fbd8c" />
+            <stop offset="100%" stopColor="#63bca0" />
           </linearGradient>
         </defs>
-        <circle cx="324" cy="250" r="150" fill="none" stroke="#8b73ce" strokeOpacity="0.24" strokeDasharray="2 12" />
-        <circle cx="324" cy="250" r="94" fill="none" stroke="#8b73ce" strokeOpacity="0.2" strokeDasharray="1 9" />
+        <circle cx="324" cy="250" r="150" fill="none" stroke="#6c9f74" strokeOpacity="0.24" strokeDasharray="2 12" />
+        <circle cx="324" cy="250" r="94" fill="none" stroke="#6c9f74" strokeOpacity="0.2" strokeDasharray="1 9" />
         <path d="M67 350C118 315 128 219 183 210C230 202 238 282 292 264C322 254 339 208 356 188" fill="none" stroke="url(#signalStroke)" strokeWidth="2.5" />
-        <path d="M72 369C138 338 140 263 190 257C245 250 248 318 300 300C325 291 340 252 350 230" fill="none" stroke="#b895e8" strokeOpacity="0.52" strokeWidth="1.2" strokeDasharray="5 8" />
-        <path d="M324 42V458M115 250H533" stroke="#8b73ce" strokeOpacity="0.14" />
-        <path d="M324 206L344 244L324 285L304 244Z" fill="none" stroke="#8b73ce" strokeOpacity="0.46" />
-        <circle cx="324" cy="250" r="6" fill="#63c5b4" />
+        <path d="M72 369C138 338 140 263 190 257C245 250 248 318 300 300C325 291 340 252 350 230" fill="none" stroke="#9fc79d" strokeOpacity="0.52" strokeWidth="1.2" strokeDasharray="5 8" />
+        <path d="M324 42V458M115 250H533" stroke="#6c9f74" strokeOpacity="0.14" />
+        <path d="M324 206L344 244L324 285L304 244Z" fill="none" stroke="#6c9f74" strokeOpacity="0.46" />
+        <circle cx="324" cy="250" r="6" fill="#63bca0" />
       </svg>
     </div>
   )

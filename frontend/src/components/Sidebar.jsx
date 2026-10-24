@@ -38,7 +38,7 @@ export default function Sidebar({ mobileOpen, onClose }) {
               <span className="text-white font-bold text-base tracking-tight leading-none block">
                 GridSight
               </span>
-              <span className="text-blue-400 text-[9px] font-semibold uppercase tracking-widest leading-none block mt-0.5">
+              <span className="text-emerald-300 text-[9px] font-semibold uppercase tracking-widest leading-none block mt-0.5">
                 Energy Intelligence
               </span>
             </div>
