@@ -1,5 +1,4 @@
 import { useState, useEffect, useCallback } from 'react'
-import { format, parseISO } from 'date-fns'
 import { Download, Wind, Zap, TrendingUp, TrendingDown, Hash } from 'lucide-react'
 import TopBar from '../components/TopBar'
 import PageHeader from '../components/PageHeader'
@@ -22,7 +21,11 @@ function calcStats(slots) {
 }
 
 function fmtTime(iso) {
-  try { return format(parseISO(iso), 'HH:mm') } catch { return iso }
+  try {
+    return new Intl.DateTimeFormat('en-GB', {
+      timeZone: 'Europe/London', hour: '2-digit', minute: '2-digit', hourCycle: 'h23',
+    }).format(new Date(iso))
+  } catch { return iso }
 }
 
 function fmtMW(v) {

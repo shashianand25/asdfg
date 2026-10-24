@@ -526,51 +526,51 @@
   }
 
   .site-header-home {
-    @apply border-transparent bg-navy-900 text-white;
+    @apply border-surface-border bg-white text-navy-900;
   }
 
   .site-header-home .brand-name,
   .site-header-home .nav-link,
   .site-header-home .mobile-menu-button {
-    @apply text-white;
+    @apply text-navy-900;
   }
 
   .site-header-home .brand-descriptor,
   .site-header-home .source-indicator {
-    @apply text-blue-100;
-  }
-
-  .site-header-home .source-indicator {
-    @apply border-white/20;
+    @apply text-content-secondary;
   }
 
   .site-header-home .nav-link:hover,
   .site-header-home .nav-link.active {
-    @apply text-white;
+    color: #5929b8;
   }
 
   .site-header-home .nav-link.active::after {
-    @apply bg-teal-300;
+    background: #7047d6;
   }
 
   .landing-page {
     @apply text-content-primary;
-    background: #FAFBFD;
+    background: #fff;
   }
 
   .landing-hero {
-    @apply relative overflow-hidden bg-navy-900 text-white;
+    @apply relative overflow-hidden text-navy-900;
     min-height: 650px;
+    background: linear-gradient(112deg, #fbfaff 0%, #f7f3ff 49%, #fbfffd 100%);
   }
 
   .landing-hero::before {
     content: '';
     @apply pointer-events-none absolute inset-0;
-    background: radial-gradient(circle at 72% 42%, rgba(22, 143, 134, 0.18), transparent 29%), linear-gradient(112deg, transparent 45%, rgba(52, 120, 246, 0.08) 100%);
+    background-image: radial-gradient(rgba(112, 71, 214, 0.16) 0.8px, transparent 0.8px), radial-gradient(circle at 78% 42%, rgba(125, 91, 202, 0.12), transparent 34%), radial-gradient(circle at 9% 91%, rgba(99, 197, 180, 0.1), transparent 28%);
+    background-size: 26px 26px, auto, auto;
+    background-position: 0 0, center, center;
+    mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), transparent 80%);
   }
 
   .landing-hero-grid {
-    @apply relative grid min-h-[570px] grid-cols-1 items-center gap-10 pt-6 pb-6 lg:grid-cols-[0.9fr_1.1fr];
+    @apply relative grid min-h-[570px] grid-cols-1 items-center gap-8 pt-8 pb-8 lg:grid-cols-[0.9fr_1.1fr];
   }
 
   .landing-hero-copy {
@@ -578,7 +578,9 @@
   }
 
   .landing-eyebrow {
-    @apply mb-7 flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-blue-100;
+    @apply mb-7 inline-flex items-center gap-2 rounded-full border border-[#e4d9ff] bg-white/80 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.14em];
+    color: #5930af;
+    box-shadow: 0 3px 14px rgba(67, 44, 118, 0.04);
   }
 
   .signal-dot {
@@ -595,18 +597,19 @@
   }
 
   .landing-hero h1 {
-    @apply text-[48px] font-semibold leading-[1.02] tracking-[-0.045em] text-white md:text-[64px];
+    @apply text-[48px] font-semibold leading-[1.02] tracking-[-0.045em] text-navy-900 md:text-[64px];
   }
 
   .landing-hero h1 em,
   .landing-intro h2 em,
   .surfaces-heading h2 em,
   .landing-close h2 em {
-    @apply font-normal text-teal-200;
+    @apply font-normal;
+    color: #6c40c5;
   }
 
   .landing-lede {
-    @apply mt-7 max-w-xl text-base leading-7 text-blue-100 md:text-[17px];
+    @apply mt-7 max-w-xl text-base leading-7 text-content-secondary md:text-[17px];
   }
 
   .landing-actions {
@@ -614,7 +617,16 @@
   }
 
   .landing-button {
-    @apply inline-flex items-center gap-3 bg-teal-300 px-5 py-3 text-sm font-semibold text-navy-900 transition-colors hover:bg-white;
+    @apply inline-flex items-center gap-3 px-6 py-3.5 text-sm font-semibold text-white transition-all duration-200;
+    background: #5929b8;
+    border-radius: 999px;
+    box-shadow: 0 9px 24px rgba(81, 39, 166, 0.2);
+  }
+
+  .landing-button:hover {
+    background: #472095;
+    box-shadow: 0 12px 28px rgba(81, 39, 166, 0.25);
+    transform: translateY(-2px);
   }
 
   .landing-button-dark {
@@ -622,11 +634,15 @@
   }
 
   .landing-text-link {
-    @apply inline-flex items-center gap-2 text-sm font-medium text-white transition-colors hover:text-teal-200;
+    @apply inline-flex items-center gap-2 text-sm font-medium text-navy-900 transition-colors;
+  }
+
+  .landing-text-link:hover {
+    color: #5929b8;
   }
 
   .landing-footnote {
-    @apply mt-12 text-[10px] uppercase tracking-[0.15em] text-blue-200/70;
+    @apply mt-10 text-[10px] uppercase tracking-[0.15em] text-content-tertiary;
   }
 
   .landing-hero-visual {
@@ -634,7 +650,8 @@
   }
 
   .energy-art {
-    @apply relative h-[500px] w-full max-w-[650px];
+    @apply pointer-events-none absolute inset-0 m-auto h-[500px] w-full max-w-[650px];
+    opacity: 0.48;
   }
 
   .energy-art svg {
@@ -664,66 +681,153 @@
   }
 
   .signal-preview {
-    @apply absolute bottom-2 right-0 w-[285px] border border-white/20 bg-[#142d4d]/85 p-5 backdrop-blur-md;
-    box-shadow: 0 18px 45px rgba(4, 14, 30, 0.3);
+    @apply relative z-10 w-full max-w-[570px] border border-[#e9e2f6] bg-white p-6;
+    border-radius: 26px;
+    box-shadow: 0 26px 70px rgba(57, 38, 94, 0.13), 0 4px 12px rgba(57, 38, 94, 0.05);
+    animation: snapshot-enter 700ms cubic-bezier(0.2, 0.75, 0.3, 1) both;
   }
 
-  .signal-preview-topline,
   .preview-status {
-    @apply flex items-center gap-2 text-[9px] font-semibold uppercase tracking-[0.14em] text-blue-100/90;
+    @apply flex items-center gap-2 text-[9px] font-semibold uppercase tracking-[0.14em] text-content-secondary;
   }
 
-  .signal-preview-topline {
-    @apply justify-between border-b border-white/10 pb-3;
+  .snapshot-topline {
+    @apply flex items-center justify-between border-b border-surface-border pb-4;
   }
 
   .preview-status {
     @apply gap-2;
   }
 
-  .preview-heading {
-    @apply mt-5 flex items-start justify-between gap-4 text-teal-200;
+  .snapshot-badge {
+    @apply inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-[9px] font-semibold uppercase tracking-[0.1em];
+    color: #287b64;
+    background: #effaf5;
+    border: 1px solid #d5eee2;
+  }
+
+  .snapshot-badge > span {
+    @apply h-1.5 w-1.5 rounded-full bg-teal-500;
+  }
+
+  .snapshot-heading {
+    @apply mt-5 flex items-center justify-between gap-4;
   }
 
   .preview-eyebrow {
-    @apply text-[10px] uppercase tracking-[0.12em] text-blue-100/70;
+    @apply text-[9px] font-semibold uppercase tracking-[0.13em] text-content-tertiary;
   }
 
-  .preview-title {
-    @apply mt-1.5 text-lg font-medium tracking-[-0.02em] text-white;
+  .snapshot-heading h2 {
+    @apply mt-1.5 text-xl font-semibold tracking-[-0.03em] text-navy-900;
   }
 
-  .preview-grid {
-    @apply mt-6 grid gap-3;
+  .snapshot-date-icon {
+    @apply flex h-10 w-10 items-center justify-center rounded-xl;
+    color: #643db5;
+    background: #f3effc;
   }
 
-  .preview-grid div {
-    @apply flex items-center justify-between gap-4 border-t border-white/10 pt-3;
+  .snapshot-chart-head {
+    @apply mt-6 flex items-end justify-between gap-4;
   }
 
-  .preview-grid span,
-  .preview-grid strong {
-    @apply text-[10px];
+  .snapshot-primary-value {
+    @apply mt-1 block text-[34px] font-semibold leading-none tracking-[-0.05em] text-navy-900;
   }
 
-  .preview-grid span {
-    @apply text-blue-100/85;
+  .snapshot-peak {
+    @apply flex flex-col items-end;
   }
 
-  .preview-grid strong {
-    @apply text-right font-medium text-white;
+  .snapshot-peak span,
+  .snapshot-peak small {
+    @apply text-[10px] text-content-tertiary;
   }
 
-  .preview-footer {
-    @apply mt-6 flex items-center justify-between border-t border-white/10 pt-4 text-[11px] font-medium text-teal-200;
+  .snapshot-peak strong {
+    @apply mt-0.5 text-sm font-semibold tabular-nums text-navy-900;
+  }
+
+  .snapshot-chart {
+    @apply mt-4 border-b border-surface-border pb-2;
+  }
+
+  .snapshot-chart svg {
+    @apply block h-[112px] w-full overflow-visible;
+  }
+
+  .snapshot-axis {
+    @apply flex justify-between text-[9px] tabular-nums text-content-tertiary;
+  }
+
+  .snapshot-legend {
+    @apply mt-3 flex items-center gap-5 text-[10px] text-content-secondary;
+  }
+
+  .snapshot-legend > span {
+    @apply inline-flex items-center gap-1.5;
+  }
+
+  .snapshot-legend > span:last-child {
+    @apply ml-auto text-content-tertiary;
+  }
+
+  .legend-mark {
+    @apply inline-block h-[3px] w-4 rounded-full;
+  }
+
+  .legend-mark.latest {
+    background: #6336c2;
+  }
+
+  .legend-mark.day-ahead {
+    background: #9cb8b0;
+  }
+
+  .snapshot-stats {
+    @apply mt-4 grid grid-cols-2 gap-3;
+  }
+
+  .snapshot-stats > div {
+    @apply flex min-h-[70px] flex-col justify-center rounded-xl border border-surface-border bg-[#fbfaff] px-3.5 py-3;
+  }
+
+  .snapshot-stats span {
+    @apply text-[9px] font-semibold uppercase tracking-[0.1em] text-content-tertiary;
+  }
+
+  .snapshot-stats strong {
+    @apply mt-1 text-[15px] font-semibold tabular-nums text-navy-900;
+  }
+
+  .snapshot-stats strong.revision-up {
+    color: #6540bb;
+  }
+
+  .snapshot-stats strong.revision-down {
+    color: #277b69;
+  }
+
+  .snapshot-stats small {
+    @apply mt-0.5 text-[9px] text-content-tertiary;
+  }
+
+  .snapshot-footnote {
+    @apply mt-3 text-[9px] text-content-tertiary;
+  }
+
+  .snapshot-empty-state {
+    @apply flex h-[112px] items-center justify-center text-xs text-content-tertiary;
+    background: repeating-linear-gradient(135deg, transparent, transparent 9px, #f8f6fb 9px, #f8f6fb 18px);
   }
 
   .hero-bottom-line {
-    @apply relative z-10 flex items-center gap-8 border-t border-white/15 py-5 text-[10px] uppercase tracking-[0.15em] text-blue-100/85;
+    @apply relative z-10 flex items-center gap-8 border-t border-[#e6e0ef] py-5 text-[10px] uppercase tracking-[0.15em] text-content-secondary;
   }
 
   .hero-scroll-cue {
-    @apply ml-auto inline-flex items-center gap-2 text-blue-100/80;
+    @apply ml-auto inline-flex items-center gap-2 text-content-secondary;
   }
 
   .landing-intro {
@@ -731,7 +835,7 @@
   }
 
   .landing-intro-section {
-    background: #F1F4F8;
+    background: #f7f5fb;
   }
 
   .landing-section-kicker {
@@ -751,7 +855,7 @@
   .landing-intro h2 em,
   .surfaces-heading h2 em,
   .landing-close h2 em {
-    @apply text-content-secondary;
+    color: #6c40c5;
   }
 
   .landing-intro-body > p {
@@ -787,7 +891,8 @@
   }
 
   .surfaces-section {
-    @apply bg-surface-bg py-20 md:py-28;
+    @apply py-20 md:py-28;
+    background: linear-gradient(180deg, #fbfaff 0%, #f6f3fb 100%);
   }
 
   .surfaces-heading {
@@ -808,6 +913,7 @@
 
   .surface-row {
     @apply grid grid-cols-[42px_1fr] items-center gap-4 border-b border-content-primary/15 py-6 text-navy-900 transition-colors hover:bg-white md:grid-cols-[42px_1fr_1.2fr_24px] md:gap-6 md:px-4;
+    border-radius: 12px;
   }
 
   .surface-number {
@@ -867,6 +973,37 @@
   .landing-footer-inner {
     @apply flex min-h-[82px] items-center justify-between gap-6 text-[11px] text-content-tertiary;
   }
+
+  .scroll-reveal {
+    opacity: 0;
+    transform: translate3d(0, 26px, 0);
+    transition: opacity 650ms ease, transform 650ms cubic-bezier(0.2, 0.72, 0.25, 1);
+    transition-delay: calc(var(--reveal-index, 0) * 90ms);
+  }
+
+  .scroll-reveal.is-visible {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+
+  @keyframes snapshot-enter {
+    from { opacity: 0; transform: translate3d(0, 18px, 0) scale(0.99); }
+    to { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .scroll-reveal,
+    .signal-preview,
+    .landing-button {
+      animation: none !important;
+      transition: none !important;
+      transform: none !important;
+    }
+
+    .scroll-reveal {
+      opacity: 1 !important;
+    }
+  }
 }
 
 @layer utilities {
@@ -909,11 +1046,11 @@
     }
 
     .site-header-home .site-nav {
-      @apply bg-navy-900 border-white/15;
+      @apply bg-white border-surface-border;
     }
 
     .site-header-home .source-indicator {
-      @apply border-white/15;
+      @apply border-surface-border;
     }
 
     .intro-section {
@@ -1019,6 +1156,10 @@
       @apply min-h-0 gap-5 pt-14 pb-7;
     }
 
+    .landing-hero-copy {
+      @apply pl-0;
+    }
+
     .landing-hero h1 {
       @apply text-[42px];
     }
@@ -1032,11 +1173,11 @@
     }
 
     .landing-hero-visual {
-      @apply min-h-[370px];
+      @apply min-h-[430px];
     }
 
     .energy-art {
-      @apply h-[360px];
+      @apply h-[400px];
     }
 
     .energy-art-label {
@@ -1056,7 +1197,10 @@
     }
 
     .signal-preview {
-      @apply bottom-0 right-0 w-[255px] p-4;
+      @apply w-full p-5;
+      max-width: 560px;
+      bottom: auto;
+      right: auto;
     }
 
     .hero-bottom-line {

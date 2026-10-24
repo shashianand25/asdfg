@@ -7,12 +7,15 @@ import {
   XAxis,
   YAxis,
 } from 'recharts'
-import { format, parseISO } from 'date-fns'
 
 const COLORS = { latest: '#3478F6', dayAhead: '#F2A23A', actual: '#168F86' }
 
 function formatTime(value) {
-  try { return format(parseISO(value), 'HH:mm') } catch { return value }
+  try {
+    return new Intl.DateTimeFormat('en-GB', {
+      timeZone: 'Europe/London', hour: '2-digit', minute: '2-digit', hourCycle: 'h23',
+    }).format(new Date(value))
+  } catch { return value }
 }
 
 function formatValue(value) {
