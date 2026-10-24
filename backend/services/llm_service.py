@@ -17,13 +17,7 @@ load_dotenv()
 
 logger = logging.getLogger(__name__)
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
-FALLBACK_MODELS = [
-    "gemini-3.5-flash",
-    "gemini-3.5-flash-lite",
-    "gemini-flash-lite-latest",
-    "gemini-3.7-flash",
-    "gemini-3.8-flash",
-]
+FALLBACK_MODELS = ["gemini-3.7-flash"]
 _client = genai.Client(api_key=GEMINI_API_KEY, http_options=types.HttpOptions(timeout=15000))
 
 ToolExecutor = Callable[[str, dict[str, Any]], Awaitable[dict[str, Any]]]
