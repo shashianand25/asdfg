@@ -224,7 +224,9 @@ async def chat(
                     return grounded_answer
             return "The assistant could not turn the available data into an answer. Please try again."
         except Exception as exc:
-            logger.warning("Gemini model=%s failed: %s", model_name, str(exc)[:160])
+            # Keep Google's structured error details (including its denial reason)
+            # in the backend logs so deployment permission issues are diagnosable.
+            logger.warning("Gemini model=%s failed: %s", model_name, str(exc)[:2000])
             if model_name == FALLBACK_MODELS[-1]:
                 logger.error("All Gemini models failed")
 
