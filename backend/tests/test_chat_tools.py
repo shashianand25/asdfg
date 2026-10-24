@@ -77,7 +77,7 @@ class ChatToolsTests(unittest.TestCase):
             {"startTime": "2026-01-15T14:00:00+00:00", "publishTime": "2026-01-14T14:00:00+00:00", "generation": 300},
             {"startTime": "2026-01-15T14:00:00+00:00", "publishTime": "2026-01-15T13:00:00+00:00", "generation": 275},
         ]
-        actuals = [{"startTime": "2026-01-15T14:00:00+00:00", "generation": 260}]
+        actuals = [{"startTime": "2026-01-15T15:00:00+01:00", "generation": 260}]
         result = chat_tools.get_forecast(
             forecasts,
             {"date": "2026-01-15", "time": "14:00", "include_actual": True},
@@ -87,6 +87,15 @@ class ChatToolsTests(unittest.TestCase):
         self.assertEqual(result["slots"][0]["latest_forecast_mw"], 275.0)
         self.assertEqual(result["slots"][0]["day_ahead_forecast_mw"], 300.0)
         self.assertEqual(result["slots"][0]["actual_generation_mw"], 260.0)
+
+    def test_exact_forecast_comparison_keeps_missing_actual_null(self):
+        result = chat_tools.get_forecast(
+            FORECASTS,
+            {"date": "2026-01-15", "time": "00:30", "include_actual": True},
+            [],
+        )
+        self.assertEqual(result["status"], "ok")
+        self.assertIsNone(result["slots"][0]["actual_generation_mw"])
 
     def test_day_ahead_summary_uses_day_ahead_values(self):
         result = chat_tools.get_forecast(
@@ -138,6 +147,17 @@ class ChatToolsTests(unittest.TestCase):
         self.assertEqual(result["count"], 0)
         self.assertIsNone(result["mae"])
 
+    def test_actuals_vs_forecast_returns_matched_sample_with_signed_error(self):
+        result = chat_tools.get_accuracy(FORECASTS, ACTUALS, {"breakdown": "actual_vs_forecast"})
+        self.assertEqual(result["status"], "ok")
+        self.assertEqual(result["count"], 2)
+        self.assertEqual(result["sample"][0], {
+            "delivery_time": "2026-01-15T00:00:00+00:00",
+            "forecast_mw": 95.0,
+            "actual_mw": 80.0,
+            "error_mw": 15.0,
+        })
+
     def test_revisions_keep_latest_minus_day_ahead_sign(self):
         result = chat_tools.get_forecast_revisions(FORECASTS, {"date": "2026-01-15", "limit": 2})
         self.assertEqual(result["status"], "ok")
@@ -148,10 +168,27 @@ class ChatToolsTests(unittest.TestCase):
             chat_tools.get_forecast(FORECASTS, {"date": "2026-01-15", "time": "25:00"})
 
     def test_tool_dispatch_uses_allowlist_and_cache_loader(self):
-        with patch.object(chat_router, "_get_forecasts", new=AsyncMock(return_value=FORECASTS)) as loader:
+        with (
+            patch.object(chat_router, "_get_forecasts", new=AsyncMock(return_value=FORECASTS)) as loader,
+            patch.object(chat_router, "_get_actuals", new=AsyncMock()) as actuals_loader,
+        ):
             result = __import__("asyncio").run(chat_router.execute_tool("get_forecast", {"date": "2026-01-15", "time": "00:00"}))
         self.assertEqual(result["status"], "ok")
         loader.assert_awaited_once()
+        actuals_loader.assert_not_awaited()
+
+    def test_forecast_dispatch_loads_actuals_only_for_comparison(self):
+        with (
+            patch.object(chat_router, "_get_forecasts", new=AsyncMock(return_value=FORECASTS)) as forecasts_loader,
+            patch.object(chat_router, "_get_actuals", new=AsyncMock(return_value=ACTUALS)) as actuals_loader,
+        ):
+            result = __import__("asyncio").run(chat_router.execute_tool(
+                "get_forecast",
+                {"date": "2026-01-15", "time": "00:30", "include_actual": True},
+            ))
+        self.assertEqual(result["slots"][0]["actual_generation_mw"], 190.0)
+        forecasts_loader.assert_awaited_once()
+        actuals_loader.assert_awaited_once()
 
     def test_accuracy_dispatch_loads_each_cached_dataset_once(self):
         with (

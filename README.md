@@ -1,6 +1,6 @@
-# WindTrader
+# GridSight
 
-WindTrader is a React + FastAPI pilot for a UK utility team making day-ahead electricity purchasing decisions. It uses national wind generation data from Elexon BMRS to help the team answer two questions:
+GridSight is a React + FastAPI pilot for a UK utility team making day-ahead electricity purchasing decisions. It uses national wind generation data from Elexon BMRS to help the team answer two questions:
 
 1. What is the latest available wind generation outlook for the delivery day?
 2. How much historical forecast error should be considered before committing to the market?
@@ -16,18 +16,64 @@ The homepage is intentionally product-led and explanation-first. Forecast charts
 
 ## Architecture
 
-```text
-React + Vite + Recharts
-        │ Axios / JSON
-        ▼
-FastAPI
-        │
-        ├── Elexon BMRS WINDFOR forecast records
-        ├── Elexon BMRS FUELHH WIND actual records
-        └── file cache for the January 2026 evaluation window
+```mermaid
+flowchart LR
+  subgraph Client[Browser]
+    UI[React pages and components]
+    Charts[Recharts visualizations]
+    HTTP[Axios API client]
+    UI --> Charts
+    UI --> HTTP
+  end
+
+  subgraph API[FastAPI backend]
+    Routes[Forecast, accuracy, and chat routers]
+    Tools[Validated chat tools]
+    Processing[Forecast selection and metric calculations]
+    Cache[JSON file cache]
+    LLM[Gemini tool orchestration]
+    Routes --> Processing
+    Routes --> Tools
+    Tools --> Processing
+    Routes --> Cache
+    Tools --> Cache
+    Routes --> LLM
+    LLM --> Tools
+  end
+
+  Elexon[Elexon BMRS WINDFOR and FUELHH]
+  Gemini[Google Gemini API]
+  HTTP -->|JSON over HTTP| Routes
+  Cache -->|cache miss| Elexon
+  LLM <-->|tool selection and grounded answer| Gemini
 ```
 
-The frontend keeps visualization and interaction concerns in React components. The backend owns Elexon access, caching, latest/day-ahead forecast selection, matched actual-vs-forecast records, and MAE/RMSE/bias calculations. Accuracy is scored using the latest forecast published at least 24 hours before delivery; forecast records published on 31 December 2025 are included to cover the first January delivery day.
+The frontend owns navigation, interaction, and visualization. FastAPI owns data retrieval, caching, forecast selection, matching, and accuracy calculations. The JSON cache is shared by dashboard routes and chat tools, so repeated requests reuse the same fetched datasets. Gemini can select from three validated tools; forecast-versus-actual questions can request the forecast and measured actual for the same exact delivery interval in one tool result. Tool results ground the final answer.
+
+```mermaid
+sequenceDiagram
+  actor User
+  participant UI as React chat
+  participant API as FastAPI chat route
+  participant Gemini
+  participant Tool as Validated data tool
+  participant Cache as JSON cache
+  participant BMRS as Elexon BMRS
+  User->>UI: Ask a data question
+  UI->>API: POST /api/chat
+  API->>Gemini: Message, context, and tool schemas
+  Gemini-->>API: Selected tool and arguments
+  API->>Tool: Validate and execute
+  Tool->>Cache: Read forecast/actual dataset
+  Cache-->>Tool: Cached records (or fetch on miss)
+  Cache->>BMRS: Fetch dataset on cache miss
+  Tool-->>API: Structured data result
+  API->>Gemini: Tool result
+  Gemini-->>API: Data-grounded answer
+  API-->>UI: JSON response
+```
+
+Accuracy metrics match forecasts and actuals on the exact `startTime`. The evaluation uses the latest forecast available at least 24 hours before delivery; forecast records published on 31 December 2025 are included to cover the first January delivery day.
 
 ## Repository map
 
@@ -71,6 +117,13 @@ submission/video-demo-script.md  Timed 2-part walkthrough script
 
 ## Run locally
 
+### Prerequisites
+
+- Python 3.10 or newer
+- Node.js 20 or newer and npm
+- Docker Compose v2, if using the container workflow
+- A Gemini API key only if you want to use the optional chatbot
+
 ### Docker
 
 ```bash
@@ -83,17 +136,28 @@ docker compose up --build
 
 If those ports are occupied, set `BACKEND_PORT=8001 FRONTEND_PORT=3001 VITE_API_URL=http://localhost:8001` before running Compose. The UI then opens at http://localhost:3001.
 
-The optional chat service reads `GEMINI_API_KEY` from `backend/.env` when that file exists. Forecast and accuracy views do not require a Gemini key.
+The optional chat service reads `GEMINI_API_KEY` from `backend/.env` when that file exists. Start from `backend/.env.example`; forecast and accuracy views do not require a Gemini key. The frontend reads `VITE_API_URL` from `frontend/.env` and defaults to `http://localhost:8000`.
 
-The chat request gives Gemini a concise runtime context and three allowlisted native
-tools: `get_forecast`, `get_accuracy`, and `get_forecast_revisions`. A normal answer
-uses one Gemini request; a data-backed answer uses one tool-selection request followed
-by one answer request. Tool arguments are validated with Pydantic, relative dates use
-`Europe/London`, and tool results reuse the existing January 2026 cache and metric
-functions. Unsupported dates, missing records, and invalid tool arguments return
-structured unavailable results rather than fabricated values.
-The tools read through the existing application cache, so repeated dashboard and chat
-requests do not refetch Elexon unless the cache is missing.
+The chat request gives Gemini a concise runtime context and three allowlisted native tools: `get_forecast`, `get_accuracy`, and `get_forecast_revisions`. A normal answer uses one Gemini request; a data-backed answer uses a tool-selection request followed by a grounded answer request. Tool arguments are validated with Pydantic, relative dates use `Europe/London`, and tools reuse the existing January 2026 cache and calculation functions. Unsupported dates, missing records, and invalid arguments produce structured unavailable results instead of invented values.
+
+## Tests and build
+
+Run the backend unit tests:
+
+```bash
+cd backend
+python -m unittest discover -s tests -v
+```
+
+Build the frontend production bundle:
+
+```bash
+cd frontend
+npm ci
+npm run build
+```
+
+The backend tests cover cache behavior, forecast and accuracy tools, validation, tool dispatch, Gemini handoff and serialization, chat response compatibility, and empty Gemini final responses. They use local fixtures and mocks; they do not require a Gemini key or a live Elexon request.
 
 ### Without Docker
 
@@ -136,18 +200,9 @@ Use `backend/.env.example` and `frontend/.env.example` as the starting points fo
 
 The product deliberately does not infer total procurement requirements from wind alone. Demand, other generation sources, prices, and portfolio constraints are outside this challenge scope.
 
-## Validation
+## Data coverage and limitations
 
-```bash
-cd backend
-python -m unittest discover -s tests -v
-
-cd ../frontend
-npm run build
-```
-
-Validation completed locally: all 22 backend unit tests passed, `npm run build` succeeded, `docker compose config --quiet` succeeded, and both Docker images built. The running container health endpoint returned `status: ok`; API checks returned 24 forecast slots for 15 January and 717 matched accuracy periods. The external Elexon API was not reachable from this environment, so the UI/API check used the existing local Elexon cache; a fresh install fetches missing records when network access is available.
-The January accuracy sample matches forecast and actual records by the exact `startTime`. WINDFOR is hourly while FUELHH actuals are half-hourly, so the primary metrics include only common delivery timestamps. Periods without an actual or a forecast available by the 24-hour cutoff are excluded; the matched count exposes this coverage.
+The January accuracy sample matches forecast and actual records by exact `startTime`. WINDFOR is hourly while FUELHH actuals are half-hourly, so metrics include only common delivery timestamps. Periods without an actual or without a forecast available by the 24-hour cutoff are excluded; the matched count exposes this coverage. The supported delivery window is January 2026. The product does not infer procurement requirements from wind alone; demand, other generation, prices, and portfolio constraints are outside scope.
 
 ## AI assistance
 

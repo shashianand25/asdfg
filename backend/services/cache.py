@@ -10,7 +10,12 @@ from typing import Any, Awaitable, Callable, Optional
 
 logger = logging.getLogger(__name__)
 
-CACHE_DIR = Path(__file__).parent.parent / "cache"
+CACHE_DIR = Path(
+    os.getenv(
+        "CACHE_DIR",
+        "/tmp/gridsight-cache" if os.getenv("VERCEL") else str(Path(__file__).parent.parent / "cache"),
+    )
+)
 
 
 def _ensure_cache_dir() -> None:
