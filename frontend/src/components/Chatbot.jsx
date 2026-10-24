@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import ReactMarkdown from 'react-markdown'
-import { MessageCircle, X, Send, Zap, Maximize2, Minimize2, Sparkles, ArrowUpRight } from 'lucide-react'
+import { MessageCircle, X, Send, Maximize2, Minimize2, Sparkles, ArrowUpRight } from 'lucide-react'
 import { sendChatMessage } from '../api/client'
 
 const INITIAL_MESSAGE = {
@@ -138,7 +138,7 @@ export default function Chatbot({ selectedDate = '2026-01-15' }) {
           <div className="chat-header flex items-center justify-between px-5 py-4 flex-shrink-0">
             <div className="flex items-center gap-2.5">
               <div className="chat-avatar w-9 h-9 rounded-xl flex items-center justify-center">
-                <Zap size={14} className="text-white" strokeWidth={2.5} />
+                <img src="/gridsight.svg" alt="" aria-hidden="true" />
               </div>
               <div>
                 <p className="text-white text-sm font-semibold leading-tight">GridSight Assistant</p>
@@ -168,7 +168,7 @@ export default function Chatbot({ selectedDate = '2026-01-15' }) {
           <div ref={messagesContainerRef} className="chat-messages min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 py-5 space-y-4">
             {history.map((msg, i) => (
               <div key={i} className={`flex items-end gap-2 ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                {msg.role !== 'user' && <span className="chat-message-avatar"><Zap size={12} /></span>}
+                {msg.role !== 'user' && <span className="chat-message-avatar"><img src="/gridsight.svg" alt="" aria-hidden="true" /></span>}
                 <div
                   className={`max-w-[86%] rounded-2xl px-4 py-3 text-[13px] leading-relaxed ${
                     msg.role === 'user'
@@ -205,7 +205,7 @@ export default function Chatbot({ selectedDate = '2026-01-15' }) {
 
             {loading && (
               <div className="flex items-end gap-2 justify-start">
-                <span className="chat-message-avatar"><Zap size={12} /></span>
+                <span className="chat-message-avatar"><img src="/gridsight.svg" alt="" aria-hidden="true" /></span>
                 <div className="chat-assistant-bubble rounded-2xl rounded-bl-md px-3 py-2.5">
                   <TypingIndicator />
                 </div>
