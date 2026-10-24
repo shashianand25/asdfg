@@ -50,7 +50,8 @@ backend/
 └── models/schemas.py        API data models
 
 backend/tests/
-└── test_chat_tools.py       Tool, Gemini-flow, cache, and API compatibility tests
+├── test_chat_tools.py       Tool, Gemini-flow, and API compatibility tests
+└── test_cache.py            Empty-response and persistent-cache behavior
 backend/.dockerignore        Keeps local credentials, caches, and virtualenv out of images
 
 frontend/src/
@@ -145,7 +146,7 @@ cd ../frontend
 npm run build
 ```
 
-Validation completed locally: all 20 backend unit tests passed, `npm run build` succeeded, `docker compose config --quiet` succeeded, and both Docker images built. The running container health endpoint returned `status: ok`; API checks returned 24 forecast slots for 15 January and 717 matched accuracy periods. The external Elexon API was not reachable from this environment, so the UI/API check used the existing local Elexon cache; a fresh install fetches missing records when network access is available.
+Validation completed locally: all 22 backend unit tests passed, `npm run build` succeeded, `docker compose config --quiet` succeeded, and both Docker images built. The running container health endpoint returned `status: ok`; API checks returned 24 forecast slots for 15 January and 717 matched accuracy periods. The external Elexon API was not reachable from this environment, so the UI/API check used the existing local Elexon cache; a fresh install fetches missing records when network access is available.
 The January accuracy sample matches forecast and actual records by the exact `startTime`. WINDFOR is hourly while FUELHH actuals are half-hourly, so the primary metrics include only common delivery timestamps. Periods without an actual or a forecast available by the 24-hour cutoff are excluded; the matched count exposes this coverage.
 
 ## AI assistance

@@ -48,7 +48,7 @@ Show `backend/routers/forecast.py` and `backend/routers/accuracy.py`, then `fron
 
 ### 3:15–3:55 — Development and verification
 
-Show `docker-compose.yml`, the Dockerfiles and `.dockerignore` files. Mention that the frontend production build succeeds, all **20 backend unit tests pass**, Compose configuration validates, and the Docker containers were built and checked through the health, forecast and accuracy endpoints. Demonstration API checks returned 24 forecast slots for 15 January and 717 matched accuracy periods.
+Show `docker-compose.yml`, the Dockerfiles and `.dockerignore` files. Mention that the frontend production build succeeds, all **22 backend unit tests pass**, Compose configuration validates, and the Docker containers were built and checked through the health, forecast and accuracy endpoints. Demonstration API checks returned 24 forecast slots for 15 January and 717 matched accuracy periods.
 
 ### 3:55–4:25 — Limitations and next steps
 
