@@ -16,9 +16,20 @@ from google.genai import types
 load_dotenv()
 
 logger = logging.getLogger(__name__)
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
-FALLBACK_MODELS = ["gemini-3.7-flash"]
-_client = genai.Client(api_key=GEMINI_API_KEY, http_options=types.HttpOptions(timeout=15000))
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "").strip().strip('"').strip("'")
+FALLBACK_MODELS = ["gemini-3.7-flash", "gemini-2.5-flash"]
+
+# Mirror mcq-generator: if key starts with AQ., use Vertex AI with project 206563422181
+if GEMINI_API_KEY.startswith("AQ."):
+    _client = genai.Client(
+        vertexai=True,
+        api_key=GEMINI_API_KEY,
+        project=os.getenv("GEMINI_PROJECT_ID", "206563422181"),
+        location=os.getenv("GEMINI_LOCATION", "global"),
+        http_options=types.HttpOptions(timeout=15000),
+    )
+else:
+    _client = genai.Client(api_key=GEMINI_API_KEY, http_options=types.HttpOptions(timeout=15000))
 
 ToolExecutor = Callable[[str, dict[str, Any]], Awaitable[dict[str, Any]]]
 
@@ -141,7 +152,12 @@ async def chat(
     for model_name in FALLBACK_MODELS:
         started = time.perf_counter()
         try:
-            first = await _generate(model_name, contents, system, TOOLS)
+            try:
+                first = await _generate(model_name, contents, system, TOOLS)
+            except Exception as tool_exc:
+                logger.info("Function calling unavailable (%s), falling back to direct generation", str(tool_exc)[:120])
+                first = await _generate(model_name, contents, system, None)
+
             requested = _function_call(first)
             if requested is None:
                 if first and first.text:
