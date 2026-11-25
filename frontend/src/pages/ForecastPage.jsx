@@ -238,17 +238,16 @@ export default function ForecastPage({ onMenuClick, selectedDate, onDateChange }
           )}
         </div>
 
-        {/* Forecast revision analysis context */}
+        {/* Explain the two forecast lines in customer language */}
         <div className="wt-card mb-6 p-5">
-          <h3 className="text-sm font-semibold text-content-primary mb-1">Forecast Vintage Context</h3>
+          <h3 className="text-sm font-semibold text-content-primary mb-1">How to Read These Forecasts</h3>
           <p className="text-xs text-content-secondary leading-relaxed">
             The <span className="text-electric-600 font-medium">latest forecast</span> represents
-            the most recently published WINDFOR record for each delivery slot.
+            the most recently published forecast available before each delivery period.
             The <span className="text-amber-600 font-medium">day-ahead forecast</span> is the
-            latest publication available at least 24 hours before delivery. This fixed decision cutoff
-            is also used for the primary accuracy score. The <code className="text-xs bg-surface-bg px-1 py-0.5 rounded">/api/forecast/history</code> endpoint
-            contains all publication vintages; a full revision timeline requires that the data was
-            captured across multiple publication timestamps.
+            latest forecast available at least 24 hours before delivery. The difference between
+            these lines shows how the outlook changed after the day-ahead decision point. The
+            day-ahead forecast is also the basis for the accuracy analysis.
           </p>
         </div>
 

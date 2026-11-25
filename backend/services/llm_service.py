@@ -17,14 +17,21 @@ load_dotenv()
 
 logger = logging.getLogger(__name__)
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "").strip().strip('"').strip("'")
-FALLBACK_MODELS = ["gemini-3.7-flash", "gemini-2.5-flash"]
+FALLBACK_MODELS = [
+    "gemini-3.5-flash",
+    "gemini-3.5-flash-lite",
+    "gemini-flash-lite-latest",
+    "gemini-3-flash-preview",
+    "gemini-3.8-flash",
+]
 
-# Mirror mcq-generator: if key starts with AQ., use Vertex AI with project 206563422181
-if GEMINI_API_KEY.startswith("AQ."):
+# Use Vertex AI if GEMINI_USE_VERTEX=true or GEMINI_PROJECT_ID is provided
+USE_VERTEX = os.getenv("GEMINI_USE_VERTEX", "").lower() in ("true", "1") or bool(os.getenv("GEMINI_PROJECT_ID"))
+if USE_VERTEX:
     _client = genai.Client(
         vertexai=True,
         api_key=GEMINI_API_KEY,
-        project=os.getenv("GEMINI_PROJECT_ID", "206563422181"),
+        project=os.getenv("GEMINI_PROJECT_ID", "583363596597"),
         location=os.getenv("GEMINI_LOCATION", "global"),
         http_options=types.HttpOptions(timeout=15000),
     )
