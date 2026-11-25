@@ -16,7 +16,14 @@ from google.genai import types
 load_dotenv()
 
 logger = logging.getLogger(__name__)
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "").strip().strip('"').strip("'")
+
+def _clean_key(raw: str) -> str:
+    raw = raw.strip().strip('"').strip("'")
+    if "=" in raw:
+        raw = raw.split("=", 1)[1].strip()
+    return raw.strip().strip('"').strip("'")
+
+GEMINI_API_KEY = _clean_key(os.getenv("GEMINI_API_KEY", ""))
 FALLBACK_MODELS = ["gemini-3.5-flash", "gemini-3.8-flash", "gemini-3.7-flash"]
 
 # Initialize Vertex client (older version defaults) and AI Studio client fallback
