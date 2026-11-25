@@ -159,6 +159,9 @@ async def chat(
     system = SYSTEM_PROMPT.format(runtime_context=runtime_context)
     contents = _contents(history, message)
 
+    if not GEMINI_API_KEY:
+        return "Assistant error: GEMINI_API_KEY is not set or empty in Vercel environment variables."
+
     last_error = "All Gemini models failed"
     for model_name in FALLBACK_MODELS:
         started = time.perf_counter()
@@ -258,4 +261,5 @@ async def chat(
             if model_name == FALLBACK_MODELS[-1]:
                 logger.error("All Gemini models failed")
 
-    return f"Assistant error: {last_error[:300]}"
+    key_preview = f"len={len(GEMINI_API_KEY)}, start={GEMINI_API_KEY[:7]}, end={GEMINI_API_KEY[-4:]}"
+    return f"Assistant error: {last_error[:180]} (Key debug: {key_preview})"
