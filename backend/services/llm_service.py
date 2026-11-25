@@ -152,6 +152,7 @@ async def chat(
     system = SYSTEM_PROMPT.format(runtime_context=runtime_context)
     contents = _contents(history, message)
 
+    last_error = "All Gemini models failed"
     for model_name in FALLBACK_MODELS:
         started = time.perf_counter()
         try:
@@ -245,8 +246,9 @@ async def chat(
         except Exception as exc:
             # Keep Google's structured error details (including its denial reason)
             # in the backend logs so deployment permission issues are diagnosable.
+            last_error = f"{model_name}: {exc}"
             logger.warning("Gemini model=%s failed: %s", model_name, str(exc)[:2000])
             if model_name == FALLBACK_MODELS[-1]:
                 logger.error("All Gemini models failed")
 
-    return "The assistant is temporarily unavailable. Please try again in a few moments."
+    return f"Assistant error: {last_error[:300]}"
