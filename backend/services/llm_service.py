@@ -19,17 +19,16 @@ logger = logging.getLogger(__name__)
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "").strip().strip('"').strip("'")
 FALLBACK_MODELS = ["gemini-3.5-flash", "gemini-2.5-flash"]
 
-# Mirror mcq-generator: if key starts with AQ., use Vertex AI
-if GEMINI_API_KEY.startswith("AQ."):
-    _client = genai.Client(
-        vertexai=True,
-        api_key=GEMINI_API_KEY,
-        project="583363596597",
-        location="asia-southeast1",
-        http_options=types.HttpOptions(timeout=15000),
-    )
-else:
-    _client = genai.Client(api_key=GEMINI_API_KEY, http_options=types.HttpOptions(timeout=15000))
+# Initialize Vertex client (older version defaults) and AI Studio client fallback
+_vertex_client = genai.Client(
+    vertexai=True,
+    api_key=GEMINI_API_KEY,
+    project="583363596597",
+    location="asia-southeast1",
+    http_options=types.HttpOptions(timeout=30000),
+)
+_ai_studio_client = genai.Client(api_key=GEMINI_API_KEY, http_options=types.HttpOptions(timeout=30000))
+
 
 ToolExecutor = Callable[[str, dict[str, Any]], Awaitable[dict[str, Any]]]
 
@@ -137,7 +136,11 @@ async def _generate(model: str, contents: list[types.Content], system: str, tool
         max_output_tokens=800,
         tools=tools,
     )
-    return await _client.aio.models.generate_content(model=model, contents=contents, config=config)
+    try:
+        return await _vertex_client.aio.models.generate_content(model=model, contents=contents, config=config)
+    except Exception as vertex_exc:
+        logger.info("Vertex attempt failed (%s), trying AI Studio endpoint", str(vertex_exc)[:100])
+        return await _ai_studio_client.aio.models.generate_content(model=model, contents=contents, config=config)
 
 
 async def chat(
