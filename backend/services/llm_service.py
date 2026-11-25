@@ -17,14 +17,14 @@ load_dotenv()
 
 logger = logging.getLogger(__name__)
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "").strip().strip('"').strip("'")
-FALLBACK_MODELS = ["gemini-3.8-flash", "gemini-3.7-flash", "gemini-3.5-flash"]
+FALLBACK_MODELS = ["gemini-3.5-flash", "gemini-3.8-flash", "gemini-3.7-flash"]
 
 # Initialize Vertex client (older version defaults) and AI Studio client fallback
 _vertex_client = genai.Client(
     vertexai=True,
     api_key=GEMINI_API_KEY,
     project="583363596597",
-    location="asia-southeast1",
+    location="global",
     http_options=types.HttpOptions(timeout=30000),
 )
 _ai_studio_client = genai.Client(api_key=GEMINI_API_KEY, http_options=types.HttpOptions(timeout=30000))
